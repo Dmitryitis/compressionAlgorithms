@@ -43,12 +43,15 @@ def huffman_encode(text):
 if __name__ == '__main__':
     path = ''
     flag = True
+    print('Для выхода введите команду: exit')
     while flag:
-
         if len(sys.argv) > 1:
             path = sys.argv[1]
         else:
             path = utils.input_path()
+        if path == 'exit':
+            flag = False
+            break
         read_str = utils.read_file(path)
         if not read_str:
             print("Файл не найден. Введите путь ещё раз.")
@@ -64,4 +67,3 @@ if __name__ == '__main__':
                 for key, value in code.items():
                     f.write(f'{key}, {value}\n')
             print(f'Файл {name_file} был успешно сжат.')
-            flag = False

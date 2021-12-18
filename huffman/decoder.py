@@ -21,11 +21,15 @@ def huffman_decode(encoded, code):
 if __name__ == '__main__':
     path = ''
     flag = True
+    print('Для выхода введите команду: exit')
     while flag:
         if len(sys.argv) > 1:
             path = sys.argv[1]
         else:
             path = utils.input_path()
+        if path == 'exit':
+            flag = False
+            break
         read_str = utils.read_file_decode(path)
 
         if not read_str:
@@ -40,4 +44,3 @@ if __name__ == '__main__':
             with open(f'{DIR_RESULT_DECODE}/resultDecode.txt', 'w') as f:
                 f.write(result)
             print(f'Файл {name_file} был успешно раскодирован.')
-            flag = False
