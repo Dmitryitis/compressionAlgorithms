@@ -7,6 +7,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 from huffman import utils
 
+DIR_COMPRESSED = 'compressedFiles'
 
 class Node(namedtuple("Node", ["left", "right"])):
     def build(self, code, acc):
@@ -55,7 +56,12 @@ if __name__ == '__main__':
         else:
             code = huffman_encode(read_str)
             encoded = "".join(code[symbol] for symbol in read_str)
-            print(code)
-            with open('output.txt', 'wb') as f:
+            utils.dirIsExsists(DIR_COMPRESSED)
+            name_file = utils.nameFiles(path)
+            with open(f'{DIR_COMPRESSED}/comp_{name_file}', 'wb') as f:
                 f.write(utils.toBytesText(encoded))
+            with open('table.txt', 'w') as f:
+                for key, value in code.items():
+                    f.write(f'{key}, {value}\n')
+            print(f'Файл {name_file} был успешно сжат.')
             flag = False
