@@ -3,7 +3,20 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 from huffman import utils
-import codecs
+
+
+def huffman_decode(encoded, code):
+    decode_text = []
+    enc_symbol = ''
+    for symbol in encoded:
+        enc_symbol += symbol
+        for dec_ch in code:
+            if code.get(dec_ch) == enc_symbol:
+                decode_text.append(dec_ch)
+                enc_symbol = ''
+                break
+    return "".join(decode_text)
+
 
 if __name__ == '__main__':
     path = ''
@@ -15,18 +28,14 @@ if __name__ == '__main__':
         else:
             path = utils.input_path()
         read_str = utils.read_file_decode(path)
-        decode_line = ''
-        for i in range(0, len(read_str)):
-            if i == 0 and len(format(read_str[i], 'b')) != 8:
-                decode_line += f"{(8 - len(format(read_str[i], 'b')))*'0'}{format(read_str[i], 'b')}"
-            else:
 
-                decode_line += format(read_str[i], 'b')
-        print(decode_line)
-
-        flag = False
         if not read_str:
             print("Файл не найден. Введите путь ещё раз.")
             path = utils.input_path()
         else:
-            print('re')
+            decode_line = utils.decodeFileToString(read_str)
+            decode_table = utils.decodeTable()
+        
+            result = huffman_decode(decode_line, decode_table)
+            print(result)
+            flag = False

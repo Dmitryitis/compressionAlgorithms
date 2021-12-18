@@ -29,3 +29,24 @@ def toBytesText(data):
     for i in range(0, len(data), 8):
         r.append(int(data[i:i + 8], 2))
     return bytes(r)
+
+
+def decodeFileToString(read_str):
+    decode_line = ''
+    for i in range(0, len(read_str)):
+        if i == 0 and len(format(read_str[i], 'b')) != 8:
+            decode_line += f"{(8 - len(format(read_str[i], 'b'))) * '0'}{format(read_str[i], 'b')}"
+        else:
+
+            decode_line += format(read_str[i], 'b')
+    return decode_line
+
+
+def decodeTable():
+    with open('table.txt', 'r') as f:
+        lines = f.read().splitlines()
+    decode_table_dict = {}
+    for line in lines:
+        line_value = line.split(', ')
+        decode_table_dict[line_value[0]] = line_value[1]
+    return decode_table_dict

@@ -1,4 +1,5 @@
 venv
 huffman/input
 huffman/output.txt
+huffman/table.txt
 .idea
