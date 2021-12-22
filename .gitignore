@@ -4,4 +4,9 @@ huffman/output.txt
 huffman/table.txt
 huffman/compressedFiles
 huffman/decodeFile
+
+arithmeticCoding/input
+arithmeticCoding/compressedFiles
+arithmeticCoding/decodeFile
+bwt/input
 .idea
