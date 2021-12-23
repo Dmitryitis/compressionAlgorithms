@@ -1,5 +1,6 @@
 import ast
 import os
+import pickle
 from decimal import Decimal
 
 
@@ -17,11 +18,21 @@ def read_file(file_path):
         return False
 
 
+def read_decode_file(file_path):
+    if os.access(file_path, os.F_OK):
+        with open(file_path, 'rb') as f:
+            data = pickle.load(f)
+        code = data.code
+        text_dict = data.dictionary
+        symbols = data.symbols
+        return code, text_dict, symbols
+    else:
+        return False
+
+
 def read_file_decode(file_path):
     if os.access(file_path, os.F_OK):
-        with open(file_path, 'r', encoding='utf-8') as f:
-            nums = f.read().splitlines()
-        return nums
+        return True
     else:
         return False
 

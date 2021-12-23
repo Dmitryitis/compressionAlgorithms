@@ -1,6 +1,8 @@
 import os
 import sys
 
+from huffman.filesOperations.reader import FileReader
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 from huffman import utils
 DIR_RESULT_DECODE = 'decodeFile'
@@ -36,11 +38,12 @@ if __name__ == '__main__':
             print("Файл не найден. Введите путь ещё раз.")
             path = utils.input_path()
         else:
+            reader = FileReader()
+            dictionary = reader.read()
             decode_line = utils.decodeFileToString(read_str)
-            decode_table = utils.decodeTable()
             utils.dirIsExsists(DIR_RESULT_DECODE)
             name_file = utils.nameFiles(path)
-            result = huffman_decode(decode_line, decode_table)
+            result = huffman_decode(decode_line, dictionary)
             with open(f'{DIR_RESULT_DECODE}/resultDecode.txt', 'w') as f:
                 f.write(result)
             print(f'Файл {name_file} был успешно раскодирован.')

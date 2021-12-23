@@ -4,6 +4,9 @@ from collections import Counter
 from collections import namedtuple
 import sys
 
+from huffman.filesOperations.reader import FileReader
+from huffman.filesOperations.writer import FileWriter
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 from huffman import utils
 
@@ -61,9 +64,10 @@ if __name__ == '__main__':
             encoded = "".join(code[symbol] for symbol in read_str)
             utils.dirIsExsists(DIR_COMPRESSED)
             name_file = utils.nameFiles(path)
+
             with open(f'{DIR_COMPRESSED}/comp_{name_file}', 'wb') as f:
                 f.write(utils.toBytesText(encoded))
-            with open('table.txt', 'w') as f:
-                for key, value in code.items():
-                    f.write(f'{key}, {value}\n')
+            file_write = FileWriter()
+            file_write.write(code)
+
             print(f'Файл {name_file} был успешно сжат.')

@@ -1,11 +1,13 @@
 import decimal
 import os
+import pickle
 import sys
 from decimal import Decimal
 
 from arithmeticCoding import utils
 from collections import Counter
 
+from arithmeticCoding.filesOperations.writer import FileWriter, Data
 from arithmeticCoding.utils import write_result_file
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
@@ -53,7 +55,12 @@ if __name__ == '__main__':
             print(text_dict)
 
             res_text = write_result_file(code, text_dict, symbol_length)
+            file_write = FileWriter(name_file)
+            file_write.write(code, text_dict, symbol_length)
 
-            with open(f'{DIR_COMPRESSED}/comp_{name_file}.txt', 'w', encoding='UTF-8') as f:
-                f.write(res_text)
+            data = Data(str(code), text_dict, symbol_length)
+            res_data = {data}
+            with open(f'{DIR_COMPRESSED}/compressed_{name_file}.txt', 'wb') as f:
+                pickle.dump(data, f)
+
             print(f'Файл {name_file} был успешно сжат.')
