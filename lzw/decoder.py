@@ -1,32 +1,31 @@
+import pickle
 import sys
-from struct import *
 from lzw import utils
 
 DIR_RESULT_DECODE = 'decodeFile'
 
 
-def lzw_decoder(compressed_data, dictionary):
-    next_code = len(dictionary.keys())
-    decompressed_data = ""
-    string = ""
-    print(compressed_data)
+class LZW():
+    def __init__(self, text_dict):
+        self.text_dict = text_dict
 
-    for code in compressed_data:
-        if not (code in dictionary):
-            dictionary[code] = string + (string[0])
-            print(dictionary[code])
-        decompressed_data += dictionary[code]
-        if not (len(string) == 0):
-            dictionary[next_code] = string + dictionary[code]
-            next_code += 1
-        string = dictionary[code]
+    def decode(self, encoded_string):
+        output = ""
+        act_string = list(encoded_string)
+        dictionary = list(self.text_dict)
 
-    utils.dirIsExsists(DIR_RESULT_DECODE)
-    output_file = open(DIR_RESULT_DECODE + "/file_decoded.txt", "w")
-    for data in decompressed_data:
-        output_file.write(data)
+        first = True
+        while len(act_string) != 0:
+            act_element = act_string.pop(0) - 1
+            if first:
+                first = False
+            else:
+                dictionary[-1] = dictionary[-1] + dictionary[act_element][0]
 
-    output_file.close()
+            output += dictionary[act_element]
+            dictionary.append(dictionary[act_element])
+
+        return output
 
 
 if __name__ == '__main__':
@@ -46,19 +45,15 @@ if __name__ == '__main__':
             print("Файл не найден. Введите путь ещё раз.")
             path = utils.input_path()
         else:
-            file = open(path, "rb")
-            compressed_data = []
-            while True:
-                rec = file.read(2)
-                if len(rec) != 2:
-                    break
-                (data,) = unpack('>H', rec)
-                compressed_data.append(data)
-
-            dictionary = utils.decodeTable()
-            dictionary = {v: k for k, v in dictionary.items()}
-            print(dictionary)
+            with open(path, 'rb') as f:
+                data = pickle.load(f)
+                encoded_string = data['encoded_string']
+                dictionary = data['dictionary']
+            lzw = LZW(dictionary)
             name_file = utils.nameFiles(path)
-            lzw_decoder(compressed_data, dictionary)
+            encoded_string = lzw.decode(encoded_string)
+            with open('decodeFile/file_decoded.txt', 'w', encoding='utf-8') as f:
+                f.write(encoded_string)
 
             print(f'Файл {name_file} был успешно раскодирован.')
+

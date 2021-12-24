@@ -65,10 +65,8 @@ class LZW():
 
 if __name__ == '__main__':
     string = 'Таким образом реализация намеченных плановых заданий позволяет оценить значение новых предложений. Если у вас есть какие то интересные предложения, обращайтесь!'
-    # string = 'abababababababababababababababab'
 
     abc = list(sorted(set(list(string))))
-    # abc = ['a', 'b', 'c', 'd', 'e']
 
     lzw = LZW(abc)
     encoded_string = lzw.encode(string)
