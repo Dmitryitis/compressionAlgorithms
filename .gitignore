@@ -8,5 +8,5 @@ huffman/decodeFile
 arithmeticCoding/input
 arithmeticCoding/compressedFiles
 arithmeticCoding/decodeFile
-bwt/input
+lzw/input
 .idea
